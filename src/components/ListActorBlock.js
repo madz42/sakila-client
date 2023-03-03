@@ -37,7 +37,7 @@ const ListActorBlock = (props) => {
         display: "flex",
         justifyContent: "space-between",
         maxWidth: 350,
-        "&:hover": { backgroundColor: "#ededed" },
+        "&:hover": { backgroundColor: "#a8bdff", boxShadow: 1 },
       }}
       style={{ cursor: "pointer" }}
     >

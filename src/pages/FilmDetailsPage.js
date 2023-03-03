@@ -4,10 +4,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ListActorBlock from "../components/ListActorBlock";
+import LoadingBlock from "../components/LoadingBlock";
 import { apiUrl } from "../config/constants";
 import ActorsListPage from "./ActorsListPage";
 
-const FilmDetailsPage = () => {
+const FilmDetailsPage = (props) => {
   const params = useParams();
   const [film, setFilm] = useState(null);
   const [addShow, setAddShow] = useState(false);
@@ -18,6 +19,7 @@ const FilmDetailsPage = () => {
       setFilm(response.data);
     } catch (error) {
       console.log(error);
+      props.msg({ type: "error", duration: 5, text: "Some error" });
     }
   };
 
@@ -28,10 +30,10 @@ const FilmDetailsPage = () => {
         FilmId: fId,
       });
       console.log(response.data);
-      // navigate(`/actors/${response.data.ActorId}`);
+      props.msg({ type: "success", duration: 5, text: "Actor added!" });
     } catch (error) {
       console.log(error);
-      // console.log(error.response.data.error);
+      props.msg({ type: "error", duration: 5, text: "Some error" });
     }
     fetchFilmById(params.id);
   };
@@ -40,10 +42,10 @@ const FilmDetailsPage = () => {
     try {
       const response = await axios.delete(`${apiUrl}/other/${aId}-${fId}`);
       console.log(response.data);
-      // navigate(`/actors/${response.data.ActorId}`);
+      props.msg({ type: "success", duration: 5, text: "Actor deleted!" });
     } catch (error) {
       console.log(error);
-      // console.log(error.response.data.error);
+      props.msg({ type: "error", duration: 5, text: "Some error" });
     }
     fetchFilmById(params.id);
   };
@@ -59,13 +61,85 @@ const FilmDetailsPage = () => {
       FilmId: id,
       Title: title,
       ReleaseYear: year,
+      Description: description,
       Actors: actors,
+      Rating: rating,
+      Length: length,
+      RentalRate: rentrate,
+      ReplacementCost: replcost,
+      RentalDuration: rentdur,
     } = film;
     return (
-      <Box>
-        <Typography>
-          {title} {year}
-        </Typography>
+      <Box sx={{ maxWidth: 800, p: 2 }}>
+        <div>
+          <div>
+            <Typography variant="h3" sx={{ m: 3 }}>
+              {title}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography sx={{ width: "33%" }}>
+                <b>Length: </b>
+                {length} min
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Year released: </b>
+                {year}
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Rating: </b>
+                {rating}
+              </Typography>
+            </Box>
+            <Box sx={{ m: 2 }}>
+              <Typography variant="h5">Description:</Typography>
+              <Typography sx={{ p: 1 }}>{description}</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography sx={{ width: "33%" }}>
+                <b>Language: </b>English
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Original Language: </b>English
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Film ID: </b>
+                {id}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography sx={{ width: "33%" }}>
+                <b>Rental Rate:</b> {rentrate} $
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Rental Duration:</b> {rentdur} d
+              </Typography>
+              <Typography sx={{ width: "33%" }}>
+                <b>Replacement Cost:</b> {replcost} $
+              </Typography>
+            </Box>
+            <Box sx={{ m: 2 }}>
+              <Typography variant="h5">Actors:</Typography>
+            </Box>
+          </div>
+        </div>
         <Box>
           {actors.map((x) => (
             <ListActorBlock
@@ -75,7 +149,11 @@ const FilmDetailsPage = () => {
             />
           ))}
         </Box>
-        <Button variant="contained" onClick={() => setAddShow(!addShow)}>
+        <Button
+          sx={{ m: 1 }}
+          variant="contained"
+          onClick={() => setAddShow(!addShow)}
+        >
           Add new actor
         </Button>
         {addShow ? (
@@ -86,7 +164,7 @@ const FilmDetailsPage = () => {
       </Box>
     );
   } else {
-    return <div>LOADING</div>;
+    return <LoadingBlock />;
   }
 };
 

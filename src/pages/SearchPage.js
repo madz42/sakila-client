@@ -3,6 +3,15 @@ import { useState } from "react";
 import { apiUrl } from "../config/constants";
 import ListActorBlock from "../components/ListActorBlock";
 import ListFilmBlock from "../components/ListFilmBlock";
+import {
+  Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box } from "@mui/system";
 
 const SearchPage = () => {
   const [search, setSearch] = useState("");
@@ -42,7 +51,7 @@ const SearchPage = () => {
     const showActors = () => {
       return (
         <div>
-          <p>Actors:</p>
+          <Typography variant="h6">Actors:</Typography>
           {foundActors.map((x) => (
             <ListActorBlock actor={x} key={x.ActorId} />
           ))}
@@ -52,7 +61,7 @@ const SearchPage = () => {
     const showFilms = () => {
       return (
         <div>
-          <p>Films:</p>
+          <Typography variant="h6">Films:</Typography>
           {foundFilms.map((x) => (
             <ListFilmBlock film={x} key={x.FilmId} />
           ))}
@@ -69,40 +78,56 @@ const SearchPage = () => {
 
   //MAIN RENDER
   return (
-    <div>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4">Search:</Typography>
       <form onSubmit={searchHandler}>
-        <input
-          placeholder="Type Here"
+        <TextField
+          sx={{ m: 1 }}
+          label="Type here to find"
+          id="outlined-size-small"
+          size="small"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <br />
-        <button type="submit">Find it!</button>
+        <Button
+          sx={{ m: 1 }}
+          variant="contained"
+          type="submit"
+          startIcon={<SearchIcon />}
+        >
+          Find it!
+        </Button>
       </form>
       <div>
-        <input
-          type="checkbox"
-          name="chkActors"
-          id="chkActors"
-          checked={showWhat.chkActors}
-          readOnly={true}
-          onClick={chkHandler}
+        <FormControlLabel
+          sx={{ m: 1 }}
+          control={
+            <Checkbox
+              name="chkActors"
+              checked={showWhat.chkActors}
+              onClick={chkHandler}
+              readOnly={true}
+            />
+          }
+          label="Actors"
         />
-        <label htmlFor="chkActors">Show actors</label>
-        <input
-          type="checkbox"
-          name="chkFilms"
-          id="chkFilms"
-          checked={showWhat.chkFilms}
-          readOnly={true}
-          onClick={chkHandler}
+        <FormControlLabel
+          sx={{ m: 1 }}
+          control={
+            <Checkbox
+              name="chkFilms"
+              checked={showWhat.chkFilms}
+              readOnly={true}
+              onClick={chkHandler}
+            />
+          }
+          label="Films"
         />
-        <label htmlFor="chkFilms">Show films</label>
       </div>
-      <p>Actors Found: {foundActors.length}</p>
-      <p>Films Found: {foundFilms.length}</p>
+      <Typography variant="h6">Actors Found: {foundActors.length}</Typography>
+      <Typography variant="h6">Films Found: {foundFilms.length}</Typography>
       {showResults()}
-    </div>
+    </Box>
   );
 };
 

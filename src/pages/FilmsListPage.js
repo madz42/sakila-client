@@ -2,7 +2,8 @@ import { apiUrl } from "../config/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ListFilmBlock from "../components/ListFilmBlock";
-import { TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
+import LoadingBlock from "../components/LoadingBlock";
 
 const FilmsListPage = (props) => {
   const [films, setFilms] = useState(null);
@@ -15,6 +16,7 @@ const FilmsListPage = (props) => {
       setFilms(response.data);
     } catch (error) {
       console.log(error);
+      props.msg({ type: "error", duration: 5, text: "Some error" });
     }
   };
 
@@ -29,22 +31,23 @@ const FilmsListPage = (props) => {
   if (films) {
     const filtered = filteredFilms();
     return (
-      <div>
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h5">Films list: {filtered.length}</Typography>
         <TextField
+          sx={{ m: 1 }}
           label="Type to filter"
           id="outlined-size-small"
           size="small"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        <Typography>TOTAL FOUND: {filtered.length}</Typography>
         {filtered.map((x) => (
           <ListFilmBlock film={x} key={x.FilmId} add={props.add} />
         ))}
-      </div>
+      </Box>
     );
   } else {
-    return <div>LOADING</div>;
+    return <LoadingBlock />;
   }
 };
 
