@@ -2,9 +2,11 @@ import { apiUrl } from "../config/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ListActorBlock from "../components/ListActorBlock";
+import { TextField, Typography } from "@mui/material";
 
-const ActorsListPage = () => {
+const ActorsListPage = (props) => {
   const [actors, setActors] = useState(null);
+  const [filter, setFilter] = useState("");
 
   const fetchActorsList = async () => {
     try {
@@ -16,15 +18,32 @@ const ActorsListPage = () => {
     }
   };
 
+  const filteredActors = () => {
+    return actors.filter(
+      (x) =>
+        x.FirstName.includes(filter.toUpperCase()) ||
+        x.LastName.includes(filter.toUpperCase())
+    );
+  };
+
   useEffect(() => {
     fetchActorsList();
   }, []);
 
-  if (actors !== null) {
+  if (actors) {
+    const filtered = filteredActors();
     return (
       <div>
-        {actors.map((x) => (
-          <ListActorBlock actor={x} key={x.ActorId} />
+        <TextField
+          label="Type to filter"
+          id="outlined-size-small"
+          size="small"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+        <Typography>TOTAL FOUND: {filtered.length}</Typography>
+        {filtered.map((x) => (
+          <ListActorBlock actor={x} key={x.ActorId} add={props.add} />
         ))}
       </div>
     );
