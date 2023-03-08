@@ -41,7 +41,10 @@ const ListActorBlock = (props) => {
       }}
       style={{ cursor: "pointer" }}
     >
-      <Typography onClick={() => navigate(`/actors/${id}`)}>
+      <Typography
+        sx={{ marginRight: 2 }}
+        onClick={() => navigate(`/actors/${id}`)}
+      >
         {fName} {lName}
       </Typography>
       {insDelete()}

@@ -31,7 +31,14 @@ const FilmsListPage = (props) => {
   if (films) {
     const filtered = filteredFilms();
     return (
-      <Box sx={{ p: 2 }}>
+      <Box
+        sx={{
+          p: 2,
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h5">Films list: {filtered.length}</Typography>
         <TextField
           sx={{ m: 1 }}
@@ -41,9 +48,11 @@ const FilmsListPage = (props) => {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        {filtered.map((x) => (
-          <ListFilmBlock film={x} key={x.FilmId} add={props.add} />
-        ))}
+        <Box sx={{ m: "auto", maxWidth: 400 }}>
+          {filtered.map((x) => (
+            <ListFilmBlock film={x} key={x.FilmId} add={props.add} />
+          ))}
+        </Box>
       </Box>
     );
   } else {

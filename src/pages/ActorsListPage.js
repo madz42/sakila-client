@@ -34,7 +34,14 @@ const ActorsListPage = (props) => {
   if (actors) {
     const filtered = filteredActors();
     return (
-      <Box sx={{ p: 2 }}>
+      <Box
+        sx={{
+          p: 2,
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h5">Actors list: {filtered.length}</Typography>
         <TextField
           sx={{ m: 1 }}
@@ -44,9 +51,11 @@ const ActorsListPage = (props) => {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        {filtered.map((x) => (
-          <ListActorBlock actor={x} key={x.ActorId} add={props.add} />
-        ))}
+        <Box sx={{ m: "auto" }}>
+          {filtered.map((x) => (
+            <ListActorBlock actor={x} key={x.ActorId} add={props.add} />
+          ))}
+        </Box>
       </Box>
     );
   } else {

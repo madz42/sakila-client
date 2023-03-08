@@ -102,7 +102,7 @@ const ActorProfilePage = (props) => {
           {fName} {lName}
         </Typography>
         <Typography variant="h6">Films:</Typography>
-        <Box>
+        <Box sx={{ maxWidth: 400, m: "auto" }}>
           {films.map((x) => (
             <ListFilmBlock
               film={x}
@@ -111,15 +111,21 @@ const ActorProfilePage = (props) => {
             />
           ))}
         </Box>
-        <Button
-          sx={{ m: 1 }}
-          variant="contained"
-          onClick={() => setAddShow(!addShow)}
-        >
-          Add new film
-        </Button>
-        {allowActorDelete(films.length)}
-        {addShow ? <FilmsListPage add={(addF) => addNewMovie(id, addF)} /> : ""}
+        <Box sx={{ maxWidth: 400, m: "auto" }}>
+          <Button
+            sx={{ m: 1 }}
+            variant="contained"
+            onClick={() => setAddShow(!addShow)}
+          >
+            Add new film
+          </Button>
+          {allowActorDelete(films.length)}
+          {addShow ? (
+            <FilmsListPage add={(addF) => addNewMovie(id, addF)} />
+          ) : (
+            ""
+          )}
+        </Box>
       </Box>
     );
   } else {
